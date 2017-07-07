@@ -1,5 +1,5 @@
 #include <pebble.h>
-#include <pebble-trello2.h>
+#include "pebble-trello2.h"
 #include <string.h>
 
 void* iso_realloc(void* ptr, size_t size) {
