@@ -28,6 +28,8 @@ char* strndup(const char *s, size_t n) {
 
 #define SHOW_DESCRIPTION "Card description"
 
+#define ARCHIVE_CARD "Archive card"
+
 /*
 Deployment builts:
 
