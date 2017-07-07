@@ -27,12 +27,25 @@
         "resources": {
             "media": [
                 {
+                    "file": "images/trello-due.PNG",
+                    "name": "TRELLO_DUE_ICON",
+                    "targetPlatforms": null,
+                    "type": "png"
+                },
+                {
+                    "file": "images/trello-archive.png",
+                    "name": "TRELLO_ARCHIVE_ICON",
+                    "targetPlatforms": null,
+                    "type": "png"
+                },
+                {
                     "file": "images/trello-pending.png",
                     "name": "TRELLO_PENDING",
                     "type": "png"
                 },
                 {
                     "file": "images/trello-logo.png",
+                    "menuIcon": true,
                     "name": "TRELLO_LOGO",
                     "type": "png"
                 },
