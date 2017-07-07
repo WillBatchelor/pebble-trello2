@@ -1,0 +1,82 @@
+{
+    "author": "Schwittmann",
+    "dependencies": {},
+    "keywords": [],
+    "name": "trebble",
+    "pebble": {
+        "capabilities": [
+            "configurable"
+        ],
+        "displayName": "Trebble: Checklists for Trello",
+        "enableMultiJS": false,
+        "messageKeys": {
+            "boardidx": 1000003,
+            "cardidx": 1000005,
+            "checklistid": 1000009,
+            "checklistidx": 1000006,
+            "failText": 1000010,
+            "itemidx": 1000007,
+            "itemstate": 1000008,
+            "listidx": 1000004,
+            "newItem": 1000011,
+            "numElements": 1000002,
+            "type": 1000000,
+            "value": 1000001
+        },
+        "projectType": "native",
+        "resources": {
+            "media": [
+                {
+                    "file": "images/trello-pending.png",
+                    "name": "TRELLO_PENDING",
+                    "type": "png"
+                },
+                {
+                    "file": "images/trello-logo.png",
+                    "name": "TRELLO_LOGO",
+                    "type": "png"
+                },
+                {
+                    "file": "images/trello-info.png",
+                    "name": "TRELLO_INFO",
+                    "type": "png"
+                },
+                {
+                    "file": "images/trello-checked.png",
+                    "name": "TRELLO_CHECKED",
+                    "type": "png"
+                },
+                {
+                    "file": "images/trello-box.png",
+                    "name": "TRELLO_BOX",
+                    "type": "png"
+                },
+                {
+                    "file": "images/refresh.png",
+                    "name": "REFRESH",
+                    "type": "png"
+                },
+                {
+                    "file": "images/record.png",
+                    "name": "RECORD",
+                    "type": "png"
+                },
+                {
+                    "file": "images/back.png",
+                    "name": "BACK",
+                    "type": "png"
+                }
+            ]
+        },
+        "sdkVersion": "3",
+        "targetPlatforms": [
+            "aplite",
+            "basalt"
+        ],
+        "uuid": "32bf21ee-b05e-4a80-97b7-21d2e2419a71",
+        "watchapp": {
+            "watchface": false
+        }
+    },
+    "version": "3.2.0"
+}
