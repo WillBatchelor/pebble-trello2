@@ -429,6 +429,7 @@ typedef struct {
 
 
 LoadedBitmap loadedBitmaps[NUMBER_IMAGES] = {
+  //{RESOURCE_ID_TRELLO_ARCHIVE, NULL}, Need to integrate this later!
   {RESOURCE_ID_TRELLO_BOX, NULL},
   {RESOURCE_ID_TRELLO_CHECKED, NULL},
   {RESOURCE_ID_TRELLO_INFO, NULL},
@@ -440,6 +441,7 @@ LoadedBitmap loadedBitmaps[NUMBER_IMAGES] = {
 };
 
 enum {
+ // RES_IDX_TRELLO_ARCHIVE, Need to integrate this later!
   RES_IDX_TRELLO_BOX,
   RES_IDX_TRELLO_CHECKED,
   RES_IDX_TRELLO_INFO,
@@ -454,6 +456,7 @@ enum {
 GBitmap* stateToIcon(ElementState *s, bool showInfo) {
   if(showInfo)
     return loadedBitmaps[RES_IDX_TRELLO_INFO].bitmap;
+    //return loadedBitmaps[RES_IDX_TRELLO_ARCHIVE].bitmap; Need to work this out later!
   switch(*s) {
     case STATE_PENDING_C:
     case STATE_PENDING_UC:
