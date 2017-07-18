@@ -417,7 +417,7 @@ CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool archiveCar
   CustomMenuLayer* this = malloc(sizeof(CustomMenuLayer));
   memset(this, 0, sizeof(CustomMenuLayer));
   this->cwindow = cwindow;
-  this->archiveCard = cardDescription;
+  this->archiveCard = archiveCard;
   this->menuLayer = menu_layer_create(layer_get_bounds(window_get_root_layer(this->cwindow->window)));
   GColor fg = COLOR_FALLBACK(GColorDukeBlue, GColorBlack);
   GColor bg = COLOR_FALLBACK(GColorWhite, GColorWhite);
