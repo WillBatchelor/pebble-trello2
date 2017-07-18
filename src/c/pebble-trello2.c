@@ -389,7 +389,7 @@ int16_t custom_menu_layer_cell_height(struct MenuLayer *menu_layer, MenuIndex *c
     GRect text_bounds = custom_menu_layer_get_text_rect(archiveCard || (content->elementState? content->elementState+row : NULL));
     const char* text = this->cwindow->content->elements[row];
     if(cardDescription)
-      text = SHOW_DESCRIPTION;
+      text = ARCHIVE_CARD;
     GSize s = graphics_text_layout_get_content_size(text,
       CUSTOM_MENU_LIST_FONT,
       text_bounds,
