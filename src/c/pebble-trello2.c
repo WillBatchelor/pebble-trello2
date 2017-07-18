@@ -361,7 +361,7 @@ CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool cardDescri
   return this;
 }
 
-void custom_menu_layer_draw_row(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
+void custom_menu_layer_draw_row_archive(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
   CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
   List * content = this->cwindow->content;
   int row = cell_index->row;
@@ -397,6 +397,20 @@ int16_t custom_menu_layer_cell_height(struct MenuLayer *menu_layer, MenuIndex *c
       GTextAlignmentLeft);
 
     return s.h + 5;
+}
+
+int16_t custom_menu_layer_header_height(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
+  return 18;
+}
+
+void custom_menu_layer_draw_header(GContext *ctx, const Layer *cell_layer, uint16_t section_index, void *callback_context) {
+  CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
+  menu_cell_basic_header_draw(ctx, cell_layer,  this->title);
+}
+
+void custom_menu_layer_destroy(CustomMenuLayer* this) {
+  menu_layer_destroy(this->menuLayer);
+  free(this);
 }
 
 
