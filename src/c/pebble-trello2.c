@@ -413,6 +413,31 @@ void custom_menu_layer_destroy(CustomMenuLayer* this) {
   free(this);
 }
 
+CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool archiveCard) {
+  CustomMenuLayer* this = malloc(sizeof(CustomMenuLayer));
+  memset(this, 0, sizeof(CustomMenuLayer));
+  this->cwindow = cwindow;
+  this->archiveCard = cardDescription;
+  this->menuLayer = menu_layer_create(layer_get_bounds(window_get_root_layer(this->cwindow->window)));
+  GColor fg = COLOR_FALLBACK(GColorDukeBlue, GColorBlack);
+  GColor bg = COLOR_FALLBACK(GColorWhite, GColorWhite);
+  menu_layer_set_normal_colors(this->menuLayer, bg, fg);
+  menu_layer_set_highlight_colors(this->menuLayer, fg, bg);
+  this->callbacks = (MenuLayerCallbacks){
+    .draw_header = custom_menu_layer_draw_header,
+    .draw_row = custom_menu_layer_draw_row,
+    .get_cell_height = custom_menu_layer_cell_height,
+    .get_header_height = custom_menu_layer_header_height,
+    .get_num_rows = custom_menu_layer_num_rows,
+    .get_num_sections = custom_menu_layer_num_sections,
+    .select_click = custom_menu_layer_select,
+    .select_long_click = custom_menu_layer_long_select
+  };
+  menu_layer_set_callbacks(this->menuLayer, this, this->callbacks);
+  menu_layer_set_click_config_onto_window(this->menuLayer, cwindow->window);
+  return this;
+}
+
 
 typedef struct {
   int index;
