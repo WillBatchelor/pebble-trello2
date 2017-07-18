@@ -810,7 +810,7 @@ static void menu_checklists_select_callback(int index, void *ctx) {
 
 
   // recalc index
-  index -= 1;
+  index -= 2;
 
   selected_checklist_index = index;
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Checklists: selected index %i", index);
@@ -1101,7 +1101,7 @@ static void in_received_handler(DictionaryIterator *iter, void *context) {
       APP_LOG(APP_LOG_LEVEL_DEBUG, "Heap used2: %u, Heap free: %u", heap_bytes_used(), heap_bytes_free ());
       windows[CWINDOW_CHECKLIST].content = checklist;
       // selected_checklist_index is data structure index. +1, because [0] is card description
-      createListWindow(&windows[CWINDOW_CHECKLIST], menu_checklist_item_select_callback, windows[CWINDOW_CHECKLISTS].content->elements[selected_checklist_index+1], menu_checklist_item_select_longcallback);
+      createListWindow(&windows[CWINDOW_CHECKLIST], menu_checklist_item_select_callback, windows[CWINDOW_CHECKLISTS].content->elements[selected_checklist_index+2], menu_checklist_item_select_longcallback);
       APP_LOG(APP_LOG_LEVEL_DEBUG, "Heap used3: %u, Heap free: %u", heap_bytes_used(), heap_bytes_free ());
       window_stack_push(windows[CWINDOW_CHECKLIST].window, true);
       APP_LOG(APP_LOG_LEVEL_DEBUG, "Heap used4: %u, Heap free: %u", heap_bytes_used(), heap_bytes_free ());
