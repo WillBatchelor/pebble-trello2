@@ -381,14 +381,14 @@ void custom_menu_layer_draw_row_archive(GContext *ctx, const Layer *cell_layer, 
   }
 }
 
-int16_t custom_menu_layer_cell_height(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
+int16_t custom_menu_layer_cell_height_archive(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
     CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
     List * content = this->cwindow->content;
     int row = cell_index->row;
    bool archiveCard = this->archiveCard && row == 1;
     GRect text_bounds = custom_menu_layer_get_text_rect(archiveCard || (content->elementState? content->elementState+row : NULL));
     const char* text = this->cwindow->content->elements[row];
-    if(cardDescription)
+    if(archiveCard)
       text = ARCHIVE_CARD;
     GSize s = graphics_text_layout_get_content_size(text,
       CUSTOM_MENU_LIST_FONT,
@@ -399,21 +399,21 @@ int16_t custom_menu_layer_cell_height(struct MenuLayer *menu_layer, MenuIndex *c
     return s.h + 5;
 }
 
-int16_t custom_menu_layer_header_height(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
+int16_t custom_menu_layer_header_height_archive(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
   return 18;
 }
 
-void custom_menu_layer_draw_header(GContext *ctx, const Layer *cell_layer, uint16_t section_index, void *callback_context) {
+void custom_menu_layer_draw_header_archive(GContext *ctx, const Layer *cell_layer, uint16_t section_index, void *callback_context) {
   CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
   menu_cell_basic_header_draw(ctx, cell_layer,  this->title);
 }
 
-void custom_menu_layer_destroy(CustomMenuLayer* this) {
+void custom_menu_layer_destroy_archive(CustomMenuLayer* this) {
   menu_layer_destroy(this->menuLayer);
   free(this);
 }
 
-CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool archiveCard) {
+CustomMenuLayer* custom_menu_layer_create_archive(CustomWindow* cwindow, bool archiveCard) {
   CustomMenuLayer* this = malloc(sizeof(CustomMenuLayer));
   memset(this, 0, sizeof(CustomMenuLayer));
   this->cwindow = cwindow;
@@ -424,14 +424,12 @@ CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool archiveCar
   menu_layer_set_normal_colors(this->menuLayer, bg, fg);
   menu_layer_set_highlight_colors(this->menuLayer, fg, bg);
   this->callbacks = (MenuLayerCallbacks){
-    .draw_header = custom_menu_layer_draw_header,
-    .draw_row = custom_menu_layer_draw_row,
-    .get_cell_height = custom_menu_layer_cell_height,
-    .get_header_height = custom_menu_layer_header_height,
-    .get_num_rows = custom_menu_layer_num_rows,
+    .draw_header = custom_menu_layer_draw_header_archive,
+    .draw_row = custom_menu_layer_draw_row_archive,
+    .get_cell_height = custom_menu_layer_cell_height_archive,
+    .get_header_height = custom_menu_layer_header_height_archive,
     .get_num_sections = custom_menu_layer_num_sections,
-    .select_click = custom_menu_layer_select,
-    .select_long_click = custom_menu_layer_long_select
+    //.select_click = custom_menu_layer_select_archive, (Will add with archive feature)
   };
   menu_layer_set_callbacks(this->menuLayer, this, this->callbacks);
   menu_layer_set_click_config_onto_window(this->menuLayer, cwindow->window);
@@ -686,6 +684,7 @@ static void list_window_unload(Window *window) {
 
 void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callback, const char* title, SimpleMenuLayerSelectCallback callbackLong) {
   bool cardDescription = window == &windows[CWINDOW_CHECKLISTS];
+  bool archiveCard = window == &windows[CWINDOW_CHECKLISTS];
 
   window_set_window_handlers(window->window, (WindowHandlers) {
   .unload = list_window_unload,
@@ -700,6 +699,15 @@ void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callba
 
   Layer *window_layer = window_get_root_layer(window->window);
   layer_add_child(window_layer, menu_layer_get_layer(window->customMenu->menuLayer));
+  
+  APP_LOG(APP_LOG_LEVEL_DEBUG, "Creating list window with %i Elements. archiveCard = %u", window->content->elementCount, (int) archiveCard);
+
+  window->customMenu = custom_menu_layer_create_archive(window, archiveCard);
+  window->customMenu->title = title;
+  window->customMenu->callback = callback;
+  window->customMenu->longCallback = callbackLong;
+
+  Layer *window_layer = window_get_root_layer(window->window);
 }
 
 static void very_short_vibe() {
