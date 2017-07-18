@@ -707,7 +707,6 @@ void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callba
   window->customMenu->callback = callback;
   window->customMenu->longCallback = callbackLong;
 
-  Layer *window_layer = window_get_root_layer(window->window);
 }
 
 static void very_short_vibe() {
