@@ -381,6 +381,23 @@ void custom_menu_layer_draw_row(GContext *ctx, const Layer *cell_layer, MenuInde
   }
 }
 
+int16_t custom_menu_layer_cell_height(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
+    CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
+    List * content = this->cwindow->content;
+    int row = cell_index->row;
+   bool archiveCard = this->archiveCard && row == 1;
+    GRect text_bounds = custom_menu_layer_get_text_rect(archiveCard || (content->elementState? content->elementState+row : NULL));
+    const char* text = this->cwindow->content->elements[row];
+    if(cardDescription)
+      text = SHOW_DESCRIPTION;
+    GSize s = graphics_text_layout_get_content_size(text,
+      CUSTOM_MENU_LIST_FONT,
+      text_bounds,
+      GTextOverflowModeTrailingEllipsis,
+      GTextAlignmentLeft);
+
+    return s.h + 5;
+}
 
 
 typedef struct {
