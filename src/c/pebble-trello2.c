@@ -230,6 +230,7 @@ struct CustomMenuLayer{
   MenuLayer* menuLayer;
   const char* title;
   bool cardDescription;
+  bool archiveCard;
   MenuLayerCallbacks callbacks;
   SimpleMenuLayerSelectCallback callback;
   SimpleMenuLayerSelectCallback longCallback;
@@ -359,6 +360,28 @@ CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool cardDescri
   menu_layer_set_click_config_onto_window(this->menuLayer, cwindow->window);
   return this;
 }
+
+void custom_menu_layer_draw_row(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
+  CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
+  List * content = this->cwindow->content;
+  int row = cell_index->row;
+
+  bool archiveCard = this->archiveCard && row == 1 && content->elements[1][1];
+    GRect s = custom_menu_layer_get_text_rect(archiveCard|| (content->elementState? content->elementState+row : NULL));
+    const char* text = content->elements[row];
+    if(archiveCard)
+    text = ARCHIVE_CARD;
+  graphics_draw_text(ctx, text, CUSTOM_MENU_LIST_FONT, s,
+    GTextOverflowModeTrailingEllipsis, GTextAlignmentLeft, NULL);
+  if(content->elementState || archiveCard) {
+    GBitmap *icon = stateToIcon(content->elementState+row, archiveCard);
+
+    graphics_context_set_compositing_mode(ctx, GCompOpSet);
+    graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
+  }
+}
+
+
 
 typedef struct {
   int index;
