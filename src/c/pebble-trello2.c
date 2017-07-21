@@ -383,7 +383,7 @@ void custom_menu_layer_draw_row_archive(GContext *ctx, const Layer *cell_layer, 
 
   
 }
-/*
+
 int16_t custom_menu_layer_cell_height_archive(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
     CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
     List * content = this->cwindow->content;
@@ -402,11 +402,6 @@ int16_t custom_menu_layer_cell_height_archive(struct MenuLayer *menu_layer, Menu
     return s.h + 5;
 }
 
-/*
-
-int16_t custom_menu_layer_header_height_archive(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
-  return 18;
-}
 
 void custom_menu_layer_draw_header_archive(GContext *ctx, const Layer *cell_layer, uint16_t section_index, void *callback_context) {
   CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
@@ -705,13 +700,13 @@ void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callba
   Layer *window_layer = window_get_root_layer(window->window);
   layer_add_child(window_layer, menu_layer_get_layer(window->customMenu->menuLayer));
   
-  APP_LOG(APP_LOG_LEVEL_DEBUG, "Creating list window with %i Elements. archiveCard = %u", window->content->elementCount, (int) archiveCard);
+ /* APP_LOG(APP_LOG_LEVEL_DEBUG, "Creating list window with %i Elements. archiveCard = %u", window->content->elementCount, (int) archiveCard);
 
   window->customMenu = custom_menu_layer_create_archive(window, archiveCard);
   window->customMenu->title = title;
   window->customMenu->callback = callback;
   window->customMenu->longCallback = callbackLong;
-
+*/
 }
 
 static void very_short_vibe() {
