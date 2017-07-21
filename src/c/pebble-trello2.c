@@ -270,6 +270,20 @@ void custom_menu_layer_draw_row(GContext *ctx, const Layer *cell_layer, MenuInde
     graphics_context_set_compositing_mode(ctx, GCompOpSet);
     graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
   }
+	
+	bool archiveCard = this->archiveCard && row == 1 && content->elements[1][1];
+    GRect s = custom_menu_layer_get_text_rect(archiveCard|| (content->elementState? content->elementState+row : NULL));
+    const char* text = content->elements[row];
+    if(archiveCard)
+    text = ARCHIVE_CARD;
+  graphics_draw_text(ctx, text, CUSTOM_MENU_LIST_FONT, s,
+    GTextOverflowModeTrailingEllipsis, GTextAlignmentLeft, NULL);
+  if(content->elementState || archiveCard) {
+    GBitmap *icon = stateToIcon(content->elementState+row, archiveCard);
+
+    graphics_context_set_compositing_mode(ctx, GCompOpSet);
+    graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
+  }
 }
 
 uint16_t custom_menu_layer_num_rows(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
@@ -361,26 +375,15 @@ CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool cardDescri
   return this;
 }
 
+/*
 void custom_menu_layer_draw_row_archive(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
   CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
   List * content = this->cwindow->content;
   int row = cell_index->row;
 
-  bool archiveCard = this->archiveCard && row == 1 && content->elements[1][1];
-    GRect s = custom_menu_layer_get_text_rect(archiveCard|| (content->elementState? content->elementState+row : NULL));
-    const char* text = content->elements[row];
-    if(archiveCard)
-    text = ARCHIVE_CARD;
-  graphics_draw_text(ctx, text, CUSTOM_MENU_LIST_FONT, s,
-    GTextOverflowModeTrailingEllipsis, GTextAlignmentLeft, NULL);
-  if(content->elementState || archiveCard) {
-    GBitmap *icon = stateToIcon(content->elementState+row, archiveCard);
-
-    graphics_context_set_compositing_mode(ctx, GCompOpSet);
-    graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
-  }
+  
 }
-
+/*
 int16_t custom_menu_layer_cell_height_archive(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
     CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
     List * content = this->cwindow->content;
@@ -398,6 +401,8 @@ int16_t custom_menu_layer_cell_height_archive(struct MenuLayer *menu_layer, Menu
 
     return s.h + 5;
 }
+
+/*
 
 int16_t custom_menu_layer_header_height_archive(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
   return 18;
@@ -435,7 +440,7 @@ CustomMenuLayer* custom_menu_layer_create_archive(CustomWindow* cwindow, bool ar
   menu_layer_set_click_config_onto_window(this->menuLayer, cwindow->window);
   return this;
 }
-
+*/
 
 typedef struct {
   int index;
