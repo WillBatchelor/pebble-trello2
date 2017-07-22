@@ -27,7 +27,6 @@
         "resources": {
             "media": [
                 {
-<<<<<<< HEAD
                     "file": "images/trello-archive.png",
                     "name": "TRELLO_ARCHIVE",
                     "targetPlatforms": null,
@@ -40,8 +39,6 @@
                     "type": "png"
                 },
                 {
-=======
->>>>>>> 65e77bd307e3cc8e9ab0ece7e021c2c239c4779a
                     "file": "images/trello-pending.png",
                     "name": "TRELLO_PENDING",
                     "type": "png"
@@ -58,15 +55,12 @@
                     "type": "png"
                 },
                 {
-<<<<<<< HEAD
-=======
                     "file": "images/trello-due.PNG",
                     "name": "TRELLO_DUE",
                     "targetPlatforms": null,
                     "type": "png"
                 },
                 {
->>>>>>> 65e77bd307e3cc8e9ab0ece7e021c2c239c4779a
                     "file": "images/trello-checked.png",
                     "name": "TRELLO_CHECKED",
                     "type": "png"
@@ -77,15 +71,12 @@
                     "type": "png"
                 },
                 {
-<<<<<<< HEAD
-=======
                     "file": "images/trello-archive.png",
                     "name": "TRELLO_ARCHIVE",
                     "targetPlatforms": null,
                     "type": "png"
                 },
                 {
->>>>>>> 65e77bd307e3cc8e9ab0ece7e021c2c239c4779a
                     "file": "images/refresh.png",
                     "name": "REFRESH",
                     "type": "png"
