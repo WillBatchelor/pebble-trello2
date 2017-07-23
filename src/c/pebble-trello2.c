@@ -28,15 +28,10 @@ char* strndup(const char *s, size_t n) {
 
 #define SHOW_DESCRIPTION "Card description"
 
-#define ARCHIVE_CARD "Archive card"
-
 /*
 Deployment builts:
-
-
 #undef APP_LOG
 #define APP_LOG(args...)
-
 */
 
 enum ApplicationState {
@@ -230,7 +225,6 @@ struct CustomMenuLayer{
   MenuLayer* menuLayer;
   const char* title;
   bool cardDescription;
-  bool archiveCard;
   MenuLayerCallbacks callbacks;
   SimpleMenuLayerSelectCallback callback;
   SimpleMenuLayerSelectCallback longCallback;
@@ -266,20 +260,6 @@ void custom_menu_layer_draw_row(GContext *ctx, const Layer *cell_layer, MenuInde
     GTextOverflowModeTrailingEllipsis, GTextAlignmentLeft, NULL);
   if(content->elementState || cardDescription) {
     GBitmap *icon = stateToIcon(content->elementState+row, cardDescription);
-
-    graphics_context_set_compositing_mode(ctx, GCompOpSet);
-    graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
-  }
-	
-	bool archiveCard = this->archiveCard && row == 1 && content->elements[1][1];
-    GRect s = custom_menu_layer_get_text_rect(archiveCard|| (content->elementState? content->elementState+row : NULL));
-    const char* text = content->elements[row];
-    if(archiveCard)
-    text = ARCHIVE_CARD;
-  graphics_draw_text(ctx, text, CUSTOM_MENU_LIST_FONT, s,
-    GTextOverflowModeTrailingEllipsis, GTextAlignmentLeft, NULL);
-  if(content->elementState || archiveCard) {
-    GBitmap *icon = stateToIcon(content->elementState+row, archiveCard);
 
     graphics_context_set_compositing_mode(ctx, GCompOpSet);
     graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
@@ -375,68 +355,6 @@ CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool cardDescri
   return this;
 }
 
-/*
-void custom_menu_layer_draw_row_archive(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
-  CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
-  List * content = this->cwindow->content;
-  int row = cell_index->row;
-
-  
-}
-
-int16_t custom_menu_layer_cell_height_archive(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
-    CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
-    List * content = this->cwindow->content;
-    int row = cell_index->row;
-   bool archiveCard = this->archiveCard && row == 1;
-    GRect text_bounds = custom_menu_layer_get_text_rect(archiveCard || (content->elementState? content->elementState+row : NULL));
-    const char* text = this->cwindow->content->elements[row];
-    if(archiveCard)
-      text = ARCHIVE_CARD;
-    GSize s = graphics_text_layout_get_content_size(text,
-      CUSTOM_MENU_LIST_FONT,
-      text_bounds,
-      GTextOverflowModeTrailingEllipsis,
-      GTextAlignmentLeft);
-
-    return s.h + 5;
-}
-
-
-void custom_menu_layer_draw_header_archive(GContext *ctx, const Layer *cell_layer, uint16_t section_index, void *callback_context) {
-  CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
-  menu_cell_basic_header_draw(ctx, cell_layer,  this->title);
-}
-
-void custom_menu_layer_destroy_archive(CustomMenuLayer* this) {
-  menu_layer_destroy(this->menuLayer);
-  free(this);
-}
-
-CustomMenuLayer* custom_menu_layer_create_archive(CustomWindow* cwindow, bool archiveCard) {
-  CustomMenuLayer* this = malloc(sizeof(CustomMenuLayer));
-  memset(this, 0, sizeof(CustomMenuLayer));
-  this->cwindow = cwindow;
-  this->archiveCard = archiveCard;
-  this->menuLayer = menu_layer_create(layer_get_bounds(window_get_root_layer(this->cwindow->window)));
-  GColor fg = COLOR_FALLBACK(GColorDukeBlue, GColorBlack);
-  GColor bg = COLOR_FALLBACK(GColorWhite, GColorWhite);
-  menu_layer_set_normal_colors(this->menuLayer, bg, fg);
-  menu_layer_set_highlight_colors(this->menuLayer, fg, bg);
-  this->callbacks = (MenuLayerCallbacks){
-    .draw_header = custom_menu_layer_draw_header_archive,
-    .draw_row = custom_menu_layer_draw_row_archive,
-    .get_cell_height = custom_menu_layer_cell_height_archive,
-    .get_header_height = custom_menu_layer_header_height_archive,
-    .get_num_sections = custom_menu_layer_num_sections,
-    //.select_click = custom_menu_layer_select_archive, (Will add with archive feature)
-  };
-  menu_layer_set_callbacks(this->menuLayer, this, this->callbacks);
-  menu_layer_set_click_config_onto_window(this->menuLayer, cwindow->window);
-  return this;
-}
-*/
-
 typedef struct {
   int index;
   bool state;
@@ -506,7 +424,6 @@ typedef struct {
 
 
 LoadedBitmap loadedBitmaps[NUMBER_IMAGES] = {
-  //{RESOURCE_ID_TRELLO_ARCHIVE, NULL}, Need to integrate this later!
   {RESOURCE_ID_TRELLO_BOX, NULL},
   {RESOURCE_ID_TRELLO_CHECKED, NULL},
   {RESOURCE_ID_TRELLO_INFO, NULL},
@@ -518,7 +435,6 @@ LoadedBitmap loadedBitmaps[NUMBER_IMAGES] = {
 };
 
 enum {
- // RES_IDX_TRELLO_ARCHIVE, Need to integrate this later!
   RES_IDX_TRELLO_BOX,
   RES_IDX_TRELLO_CHECKED,
   RES_IDX_TRELLO_INFO,
@@ -533,7 +449,6 @@ enum {
 GBitmap* stateToIcon(ElementState *s, bool showInfo) {
   if(showInfo)
     return loadedBitmaps[RES_IDX_TRELLO_INFO].bitmap;
-    //return loadedBitmaps[RES_IDX_TRELLO_ARCHIVE].bitmap; Need to work this out later!
   switch(*s) {
     case STATE_PENDING_C:
     case STATE_PENDING_UC:
@@ -684,7 +599,6 @@ static void list_window_unload(Window *window) {
 
 void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callback, const char* title, SimpleMenuLayerSelectCallback callbackLong) {
   bool cardDescription = window == &windows[CWINDOW_CHECKLISTS];
-  bool archiveCard = window == &windows[CWINDOW_CHECKLISTS];
 
   window_set_window_handlers(window->window, (WindowHandlers) {
   .unload = list_window_unload,
@@ -699,14 +613,6 @@ void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callba
 
   Layer *window_layer = window_get_root_layer(window->window);
   layer_add_child(window_layer, menu_layer_get_layer(window->customMenu->menuLayer));
-  
- /* APP_LOG(APP_LOG_LEVEL_DEBUG, "Creating list window with %i Elements. archiveCard = %u", window->content->elementCount, (int) archiveCard);
-
-  window->customMenu = custom_menu_layer_create_archive(window, archiveCard);
-  window->customMenu->title = title;
-  window->customMenu->callback = callback;
-  window->customMenu->longCallback = callbackLong;
-*/
 }
 
 static void very_short_vibe() {
@@ -817,7 +723,7 @@ static void menu_checklists_select_callback(int index, void *ctx) {
 
 
   // recalc index
-  index -= 2;
+  index -= 1;
 
   selected_checklist_index = index;
   APP_LOG(APP_LOG_LEVEL_DEBUG, "Checklists: selected index %i", index);
@@ -1108,7 +1014,7 @@ static void in_received_handler(DictionaryIterator *iter, void *context) {
       APP_LOG(APP_LOG_LEVEL_DEBUG, "Heap used2: %u, Heap free: %u", heap_bytes_used(), heap_bytes_free ());
       windows[CWINDOW_CHECKLIST].content = checklist;
       // selected_checklist_index is data structure index. +1, because [0] is card description
-      createListWindow(&windows[CWINDOW_CHECKLIST], menu_checklist_item_select_callback, windows[CWINDOW_CHECKLISTS].content->elements[selected_checklist_index+2], menu_checklist_item_select_longcallback);
+      createListWindow(&windows[CWINDOW_CHECKLIST], menu_checklist_item_select_callback, windows[CWINDOW_CHECKLISTS].content->elements[selected_checklist_index+1], menu_checklist_item_select_longcallback);
       APP_LOG(APP_LOG_LEVEL_DEBUG, "Heap used3: %u, Heap free: %u", heap_bytes_used(), heap_bytes_free ());
       window_stack_push(windows[CWINDOW_CHECKLIST].window, true);
       APP_LOG(APP_LOG_LEVEL_DEBUG, "Heap used4: %u, Heap free: %u", heap_bytes_used(), heap_bytes_free ());
