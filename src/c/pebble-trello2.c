@@ -230,7 +230,6 @@ struct CustomMenuLayer{
   MenuLayer* menuLayer;
   const char* title;
   bool cardDescription;
-  bool archiveCard;
   MenuLayerCallbacks callbacks;
   SimpleMenuLayerSelectCallback callback;
   SimpleMenuLayerSelectCallback longCallback;
@@ -271,19 +270,6 @@ void custom_menu_layer_draw_row(GContext *ctx, const Layer *cell_layer, MenuInde
     graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
   }
 	
-	bool archiveCard = this->archiveCard && row == 1 && content->elements[1][1];
-    GRect s = custom_menu_layer_get_text_rect(archiveCard|| (content->elementState? content->elementState+row : NULL));
-    const char* text = content->elements[row];
-    if(archiveCard)
-    text = ARCHIVE_CARD;
-  graphics_draw_text(ctx, text, CUSTOM_MENU_LIST_FONT, s,
-    GTextOverflowModeTrailingEllipsis, GTextAlignmentLeft, NULL);
-  if(content->elementState || archiveCard) {
-    GBitmap *icon = stateToIcon(content->elementState+row, archiveCard);
-
-    graphics_context_set_compositing_mode(ctx, GCompOpSet);
-    graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
-  }
 }
 
 uint16_t custom_menu_layer_num_rows(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
@@ -374,68 +360,6 @@ CustomMenuLayer* custom_menu_layer_create(CustomWindow* cwindow, bool cardDescri
   menu_layer_set_click_config_onto_window(this->menuLayer, cwindow->window);
   return this;
 }
-
-/*
-void custom_menu_layer_draw_row_archive(GContext *ctx, const Layer *cell_layer, MenuIndex *cell_index, void *callback_context) {
-  CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
-  List * content = this->cwindow->content;
-  int row = cell_index->row;
-
-  
-}
-
-int16_t custom_menu_layer_cell_height_archive(struct MenuLayer *menu_layer, MenuIndex *cell_index, void *callback_context) {
-    CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
-    List * content = this->cwindow->content;
-    int row = cell_index->row;
-   bool archiveCard = this->archiveCard && row == 1;
-    GRect text_bounds = custom_menu_layer_get_text_rect(archiveCard || (content->elementState? content->elementState+row : NULL));
-    const char* text = this->cwindow->content->elements[row];
-    if(archiveCard)
-      text = ARCHIVE_CARD;
-    GSize s = graphics_text_layout_get_content_size(text,
-      CUSTOM_MENU_LIST_FONT,
-      text_bounds,
-      GTextOverflowModeTrailingEllipsis,
-      GTextAlignmentLeft);
-
-    return s.h + 5;
-}
-
-
-void custom_menu_layer_draw_header_archive(GContext *ctx, const Layer *cell_layer, uint16_t section_index, void *callback_context) {
-  CustomMenuLayer *this = (CustomMenuLayer*) callback_context;
-  menu_cell_basic_header_draw(ctx, cell_layer,  this->title);
-}
-
-void custom_menu_layer_destroy_archive(CustomMenuLayer* this) {
-  menu_layer_destroy(this->menuLayer);
-  free(this);
-}
-
-CustomMenuLayer* custom_menu_layer_create_archive(CustomWindow* cwindow, bool archiveCard) {
-  CustomMenuLayer* this = malloc(sizeof(CustomMenuLayer));
-  memset(this, 0, sizeof(CustomMenuLayer));
-  this->cwindow = cwindow;
-  this->archiveCard = archiveCard;
-  this->menuLayer = menu_layer_create(layer_get_bounds(window_get_root_layer(this->cwindow->window)));
-  GColor fg = COLOR_FALLBACK(GColorDukeBlue, GColorBlack);
-  GColor bg = COLOR_FALLBACK(GColorWhite, GColorWhite);
-  menu_layer_set_normal_colors(this->menuLayer, bg, fg);
-  menu_layer_set_highlight_colors(this->menuLayer, fg, bg);
-  this->callbacks = (MenuLayerCallbacks){
-    .draw_header = custom_menu_layer_draw_header_archive,
-    .draw_row = custom_menu_layer_draw_row_archive,
-    .get_cell_height = custom_menu_layer_cell_height_archive,
-    .get_header_height = custom_menu_layer_header_height_archive,
-    .get_num_sections = custom_menu_layer_num_sections,
-    //.select_click = custom_menu_layer_select_archive, (Will add with archive feature)
-  };
-  menu_layer_set_callbacks(this->menuLayer, this, this->callbacks);
-  menu_layer_set_click_config_onto_window(this->menuLayer, cwindow->window);
-  return this;
-}
-*/
 
 typedef struct {
   int index;
@@ -684,8 +608,6 @@ static void list_window_unload(Window *window) {
 
 void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callback, const char* title, SimpleMenuLayerSelectCallback callbackLong) {
   bool cardDescription = window == &windows[CWINDOW_CHECKLISTS];
-  bool archiveCard = window == &windows[CWINDOW_CHECKLISTS];
-
   window_set_window_handlers(window->window, (WindowHandlers) {
   .unload = list_window_unload,
   });

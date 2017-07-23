@@ -27,18 +27,6 @@
         "resources": {
             "media": [
                 {
-                    "file": "images/trello-archive.png",
-                    "name": "TRELLO_ARCHIVE",
-                    "targetPlatforms": null,
-                    "type": "png"
-                },
-                {
-                    "file": "images/trello-due.PNG",
-                    "name": "TRELLO_DUE",
-                    "targetPlatforms": null,
-                    "type": "png"
-                },
-                {
                     "file": "images/trello-pending.png",
                     "name": "TRELLO_PENDING",
                     "type": "png"
