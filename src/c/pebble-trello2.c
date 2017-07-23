@@ -264,10 +264,6 @@ void custom_menu_layer_draw_row(GContext *ctx, const Layer *cell_layer, MenuInde
     graphics_context_set_compositing_mode(ctx, GCompOpSet);
     graphics_draw_bitmap_in_rect(ctx, icon, (GRect){.origin = (GPoint){.x = 1, .y = 10}, .size = gbitmap_get_bounds(icon).size});
   }
-<<<<<<< HEAD
-=======
-	
->>>>>>> 6a96c4d8df11d58a9cfaa48d9132e648ec4857c6
 }
 
 uint16_t custom_menu_layer_num_rows(struct MenuLayer *menu_layer, uint16_t section_index, void *callback_context) {
@@ -603,10 +599,6 @@ static void list_window_unload(Window *window) {
 
 void createListWindow(CustomWindow *window, SimpleMenuLayerSelectCallback callback, const char* title, SimpleMenuLayerSelectCallback callbackLong) {
   bool cardDescription = window == &windows[CWINDOW_CHECKLISTS];
-<<<<<<< HEAD
-
-=======
->>>>>>> 6a96c4d8df11d58a9cfaa48d9132e648ec4857c6
   window_set_window_handlers(window->window, (WindowHandlers) {
   .unload = list_window_unload,
   });
